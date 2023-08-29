@@ -1,0 +1,31 @@
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: TerraformInstaller@0
+  displayName: Terraform Installation
+  inputs:
+    terraformVersion: 'latest'
+  
+- task: TerraformCLI@0
+  displayName: Terraform Init Stage
+  inputs:
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/path/path/'
+    backendType: 'azurerm'
+    backendServiceArm: '[name of the storage principal]'
+    backendAzureRmSubscriptionId: '[azure subscription ID]'
+    allowTelemetryCollection: true
+
+- task: TerraformCLI@0
+  displayName: Terraform Plan Stage
+  inputs:
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/path/path/'
+    environmentServiceName: '[name of the storage principal]'
+    providerAzureRmSubscriptionId: '[azure subscription ID]'
+    runAzLogin: true
+    allowTelemetryCollection: true
